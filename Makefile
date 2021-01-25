@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -g -Wall -Wextra -pedantic -Werror
+CXXFLAGS = -g -Wall -Wextra -pedantic -Werror -std=c++14
 TARGETS = encode decode
 
 .PHONY: all
@@ -11,12 +11,16 @@ build:
 build/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
-build/encode: build/encode.o build/huffman_tree.o
+build/encode: build/encode.o build/compressor.o build/huffman_tree.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
-build/decode: build/decode.o build/huffman_tree.o
+build/decode: build/decode.o build/compressor.o build/huffman_tree.o
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
 .PHONY: clean
 clean:
-	rm -rf **/*.o build/*
+	rm -rf build/*
+
+.PHONY: format
+format:
+	clang-format --style=Google --sort-includes -i src/*
