@@ -39,8 +39,7 @@ HuffmanTree::HuffmanTree(const HuffmanTree::CharStat& stat) {
 
 namespace {
 void BuildMinimalCode(const HuffmanTree::NodePtr& node,
-                      HuffmanTree::SymBitmask& sym_bitmask,
-                      std::string& bitmask) {
+                      HuffmanTree::SymBitmask& sym_bitmask, string& bitmask) {
   if (!node->left && !node->right) {
     sym_bitmask[node->sym] = bitmask;
     return;

@@ -6,25 +6,40 @@
 using namespace std;
 
 namespace {
-  void print_help() {
-    cout << "Syntax: encode [-h] input_file output_file\n"
-         << "options:\n"
-         << "  -h    Print this Help.\n";
-  }
+void print_help() {
+  cout << "Syntax: encode [-h] input_file output_file\n"
+       << "options:\n"
+       << "  -h    Print this Help.\n";
+}
 }  // namespace
 
 int main(int argc, char** argv) {
   if (argc < 2) {
+    cout << "Missing input_file\n\n";
     print_help();
     return 1;
   }
-  string filename = argv[1];
-  ifstream file(filename);
-  if (!file.is_open()) {
-    cout << "No such file: " + filename + "\n";
-    return 0;
+
+  if (argc < 3) {
+    cout << "Missing output_file\n\n";
+    print_help();
+    return 1;
   }
 
-  Compressor compressor(file);
+  string input_filename = argv[1];
+  ifstream input(input_filename);
+  if (!input.is_open()) {
+    cout << "No such file: " + input_filename + "\n";
+    return 1;
+  }
+
+  string output_filename = argv[2];
+  ofstream output(output_filename, ios::binary);
+  if (!output.is_open()) {
+    cout << "No such file: " + output_filename + "\n";
+    return 1;
+  }
+
+  Compress(input, output);
   return 0;
 }
