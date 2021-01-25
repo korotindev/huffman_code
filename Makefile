@@ -1,24 +1,22 @@
 CXX = g++
 CXXFLAGS = -g -Wall -Wextra -pedantic -Werror
-
-LIBS = huffman_tree
 TARGETS = encode decode
 
-all: prepare $(TARGETS)
+.PHONY: all
+all: build build/encode build/decode
 
-prepare:
-	mkdir -p build/lib
-	mkdir -p build/obj
-	mkdir -p build/bin
+build:
+	mkdir -p build
 
-build/obj/%.o: src/%.cpp
+build/%.o: src/%.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
-encode: build/obj/encode.o build/obj/huffman_tree.o
-	$(CXX) $(CXXFLAGS) -o build/bin/$@ $^
+build/encode: build/encode.o build/huffman_tree.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
-decode: build/obj/decode.o build/obj/huffman_tree.o
-	$(CXX) $(CXXFLAGS) -o build/bin/$@ $^
+build/decode: build/decode.o build/huffman_tree.o
+	$(CXX) $(CXXFLAGS) -o $@ $^
 
+.PHONY: clean
 clean:
-	rm -rf build/**/*.o build/bin/* encode decode
+	rm -rf **/*.o build/*
