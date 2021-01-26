@@ -24,4 +24,4 @@ clean:
 
 .PHONY: format
 format:
-	clang-format --style=.clang-format --sort-includes -i src/*
+	clang-format --sort-includes -i src/*

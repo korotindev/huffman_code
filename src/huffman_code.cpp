@@ -3,8 +3,7 @@
 using namespace std;
 
 HuffmanCode::HuffmanCode(const HuffmanTree&) {}
-const HuffmanCode::SymbolInfo& HuffmanCode::GetSymbolCompressionInfo(
-    char) const {
+const HuffmanCode::SymbolInfo& HuffmanCode::GetSymbolCompressionInfo(char) const {
   static HuffmanCode::SymbolInfo info;
   return info;
 }

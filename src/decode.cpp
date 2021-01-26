@@ -1,15 +1,15 @@
 #include <fstream>
-#include <string>
 #include <iostream>
+#include <string>
 
 using namespace std;
 
 namespace {
-void print_help() {
-  cout << "Syntax: decode [-h] input_file output_file\n"
-       << "options:\n"
-       << "  -h    Print this Help.\n";
-}
+  void print_help() {
+    cout << "Syntax: decode [-h] input_file output_file\n"
+         << "options:\n"
+         << "  -h    Print this Help.\n";
+  }
 }  // namespace
 
 int main(int argc, char** argv) {

@@ -6,11 +6,11 @@
 using namespace std;
 
 namespace {
-void print_help() {
-  cout << "Syntax: encode [-h] input_file output_file\n"
-       << "options:\n"
-       << "  -h    Print this Help.\n";
-}
+  void print_help() {
+    cout << "Syntax: encode [-h] input_file output_file\n"
+         << "options:\n"
+         << "  -h    Print this Help.\n";
+  }
 }  // namespace
 
 int main(int argc, char** argv) {

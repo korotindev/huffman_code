@@ -14,9 +14,7 @@ HuffmanTree::HuffmanTree(const HuffmanTree::CharStat& stat) {
     pq.push_back(move(node));
   }
 
-  auto comp = [](const Node::Ptr& lhs, const Node::Ptr& rhs) {
-    return lhs->count > rhs->count;
-  };
+  auto comp = [](const Node::Ptr& lhs, const Node::Ptr& rhs) { return lhs->count > rhs->count; };
   make_heap(pq.begin(), pq.end(), comp);
 
   while (pq.size() > 1) {
