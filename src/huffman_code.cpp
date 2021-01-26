@@ -1,7 +1,8 @@
 #include "huffman_code.h"
 
 #include <algorithm>
-#include <type_traits>
+
+#include "utils.h"
 
 using namespace std;
 using CodeInfo = HuffmanCode::CodeInfo;
@@ -14,30 +15,6 @@ namespace {
     }
     BuildCannonicalCodesLegths(result, root->left, code_length + 1);
     BuildCannonicalCodesLegths(result, root->right, code_length + 1);
-  }
-
-  template <typename T>
-  void WritePrimitive(ostream& out, T t, size_t n = sizeof(T)) {
-    static_assert(is_integral<T>::value, "Integral required.");
-    out.write(reinterpret_cast<const char*>(&t), n);
-  }
-
-  template <typename T>
-  void WritePrimitive(ostream& out, const T* t, size_t n = sizeof(T)) {
-    static_assert(is_integral<T>::value, "Integral required.");
-    out.write(reinterpret_cast<const char*>(t), n);
-  }
-
-  template <typename T>
-  void ReadPrimitive(istream& in, T& t, size_t n = sizeof(T)) {
-    static_assert(is_integral<T>::value, "Integral required.");
-    in.read(reinterpret_cast<char*>(&t), n);
-  }
-
-  template <typename T>
-  void ReadPrimitive(istream& in, T* t, size_t n = sizeof(T)) {
-    static_assert(is_integral<T>::value, "Integral required.");
-    in.read(reinterpret_cast<char*>(t), n);
   }
 }  // namespace
 

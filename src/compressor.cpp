@@ -6,7 +6,7 @@ using namespace std;
 
 Compressor::Compressor(const HuffmanCode& huffman_code) : huffman_code_(huffman_code) {}
 
-void Compressor::Compress(istream& input, ostream& output) const {
+void Compressor::Encode(istream& input, ostream& output) const {
   huffman_code_.SerializeTo(output);
   output.put(0);
   char c;

@@ -9,5 +9,5 @@ class Compressor {
 
  public:
   explicit Compressor(const HuffmanCode& huffman_code);
-  void Compress(std::istream& input, std::ostream& output) const;
+  void Encode(std::istream& input, std::ostream& output) const;
 };

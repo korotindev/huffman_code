@@ -45,7 +45,7 @@ int main(int argc, char** argv) {
   Compressor compressor(huffman_code);
   input.clear();
   input.seekg(0);
-  compressor.Compress(input, output);
+  compressor.Encode(input, output);
 
   return 0;
 }
