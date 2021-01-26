@@ -1,7 +1,6 @@
 #include <fstream>
 #include <string>
-
-#include "compressor.h"
+#include <iostream>
 
 using namespace std;
 
@@ -40,6 +39,5 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  Decompress(input, output);
   return 0;
 }

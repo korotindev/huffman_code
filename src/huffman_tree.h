@@ -1,26 +1,31 @@
 #pragma once
 
+#include <iostream>
 #include <memory>
-#include <string>
 #include <unordered_map>
+#include <vector>
 
 class HuffmanTree {
  public:
-  struct Node;
-  using NodePtr = std::unique_ptr<Node>;
   struct Node {
-    NodePtr left;
-    NodePtr right;
+    using Ptr = std::unique_ptr<Node>;
+    Ptr left;
+    Ptr right;
     unsigned long long count;
     char sym;
   };
   using CharStat = std::unordered_map<char, unsigned long long>;
-  using SymBitmask = std::unordered_map<char, std::string>;
+  struct HuffmanCode {
+    unsigned long long size;
+    unsigned long long code;
+  };
+  using HuffmanCodes = std::unordered_map<char, HuffmanCode>;
 
   HuffmanTree(const CharStat& stat);
-
-  SymBitmask BuildSymBitmask() const;
+  const Node::Ptr& GetRoot() const;
 
  private:
-  NodePtr root;
+  Node::Ptr root;
 };
+
+HuffmanTree BuildHuffmanTreeFrom(std::istream& input);

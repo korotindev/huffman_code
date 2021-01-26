@@ -40,6 +40,12 @@ int main(int argc, char** argv) {
     return 1;
   }
 
-  Compress(input, output);
+  auto tree = BuildHuffmanTreeFrom(input);
+  HuffmanCode huffman_code(tree);
+  Compressor compressor(huffman_code);
+  input.clear();
+  input.seekg(0);
+  compressor.Compress(input, output);
+
   return 0;
 }
