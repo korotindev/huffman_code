@@ -20,7 +20,7 @@ class HuffmanTree {
   const Node::Ptr& GetRoot() const;
 
  private:
-  Node::Ptr root;
+  Node::Ptr root_;
 };
 
 HuffmanTree BuildHuffmanTreeFrom(std::istream& input);

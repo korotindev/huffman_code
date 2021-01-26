@@ -32,7 +32,11 @@ HuffmanTree::HuffmanTree(const HuffmanTree::CharStat& stat) {
     pq.push_back(move(node));
     push_heap(pq.begin(), pq.end(), comp);
   }
-  root = move(pq.front());
+  root_ = move(pq.front());
+}
+
+const HuffmanTree::Node::Ptr& HuffmanTree::GetRoot() const {
+  return root_;
 }
 
 HuffmanTree BuildHuffmanTreeFrom(istream& input) {
