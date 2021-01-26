@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -g -Wall -Wextra -pedantic -Werror -std=c++14
 TARGETS = encode decode
-SDK_OBJECTS = build/compressor.o build/huffman_tree.o build/bit_stream.o build/huffman_code.o
+SDK_OBJECTS = build/compressor.o build/huffman_tree.o build/cached_bit_writer.o build/huffman_code.o
 
 .PHONY: all
 all: build build/encode build/decode
