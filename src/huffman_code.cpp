@@ -32,7 +32,10 @@ void HuffmanCode::BuildSymbolInfos(vector<CodeInfo> code_infos) {
   uint current_code = 0, current_length = 0, next_length = 0;
   for (size_t i = 0; i < code_infos.size(); i++) {
     current_length = code_infos[i].length;
+
     symbol_infos_[code_infos[i].sym] = SymbolInfo{current_code, current_length};
+    inverted_symbol_infos_[current_code] = code_infos[i].sym;
+
     if (i + 1 < code_infos.size()) {
       next_length = current_length;
     } else {
@@ -42,6 +45,14 @@ void HuffmanCode::BuildSymbolInfos(vector<CodeInfo> code_infos) {
   }
 }
 const HuffmanCode::SymbolInfo& HuffmanCode::GetSymbolCompressionInfo(char sym) const { return symbol_infos_.at(sym); }
+
+const char* HuffmanCode::FindSymbolByCode(uint code) const {
+  auto it = inverted_symbol_infos_.find(code);
+  if (it == inverted_symbol_infos_.end()) {
+    return nullptr;
+  }
+  return &it->second;
+}
 
 void HuffmanCode::SerializeTo(ostream& out) const {
   {
