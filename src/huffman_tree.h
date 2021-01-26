@@ -15,11 +15,6 @@ class HuffmanTree {
     char sym;
   };
   using CharStat = std::unordered_map<char, unsigned long long>;
-  struct HuffmanCode {
-    unsigned long long size;
-    unsigned long long code;
-  };
-  using HuffmanCodes = std::unordered_map<char, HuffmanCode>;
 
   HuffmanTree(const CharStat& stat);
   const Node::Ptr& GetRoot() const;
