@@ -2,13 +2,13 @@
 #include <iostream>
 #include <string>
 
-#include "huffman_code.h"
+#include "compressor.h"
 
 using namespace std;
 
 namespace {
   void print_help() {
-    cout << "Syntax: decode [-h] input_file output_file\n"
+    cout << "Syntax: decode [-h] in_file out_file\n"
          << "options:\n"
          << "  -h    Print this Help.\n";
   }
@@ -16,32 +16,34 @@ namespace {
 
 int main(int argc, char** argv) {
   if (argc < 2) {
-    cout << "Missing input_file\n\n";
+    cout << "Missing in_file\n\n";
     print_help();
     return 1;
   }
 
   if (argc < 3) {
-    cout << "Missing output_file\n\n";
+    cout << "Missing out_file\n\n";
     print_help();
     return 1;
   }
 
-  string input_filename = argv[1];
-  ifstream input(input_filename, ios::binary);
-  if (!input.is_open()) {
-    cout << "No such file: " + input_filename + "\n";
+  string in_filename = argv[1];
+  ifstream in(in_filename, ios::binary);
+  if (!in.is_open()) {
+    cout << "No such file: " + in_filename + "\n";
     return 1;
   }
 
-  string output_filename = argv[2];
-  ofstream output(output_filename, ios::binary);
-  if (!output.is_open()) {
-    cout << "No such file: " + output_filename + "\n";
+  string out_filename = argv[2];
+  ofstream out(out_filename, ios::binary);
+  if (!out.is_open()) {
+    cout << "No such file: " + out_filename + "\n";
     return 1;
   }
 
-  auto code = HuffmanCode::DeserializeFrom(input);
+  auto code = HuffmanCode::DeserializeFrom(in);
+  Compressor compressor(code);
+  compressor.Decode(in, out);
 
   return 0;
 }

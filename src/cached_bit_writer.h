@@ -4,7 +4,7 @@
 #include <vector>
 
 class CachedBitWriter {
-  std::ostream& output_;
+  std::ostream& out_;
   std::vector<u_char> buffer;
   size_t bucket_idx;
   u_char bucket_bits_allocated;

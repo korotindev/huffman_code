@@ -37,10 +37,10 @@ HuffmanTree::HuffmanTree(const HuffmanTree::CharStat& stat) {
 
 const HuffmanTree::Node::Ptr& HuffmanTree::GetRoot() const { return root_; }
 
-HuffmanTree BuildHuffmanTreeFrom(istream& input) {
+HuffmanTree BuildHuffmanTreeFrom(istream& in) {
   HuffmanTree::CharStat stat;
   char c;
-  while (input.get(c)) {
+  while (in.get(c)) {
     stat[c]++;
   }
   return HuffmanTree(stat);

@@ -23,4 +23,4 @@ class HuffmanTree {
   Node::Ptr root_;
 };
 
-HuffmanTree BuildHuffmanTreeFrom(std::istream& input);
+HuffmanTree BuildHuffmanTreeFrom(std::istream& in);

@@ -6,7 +6,7 @@ using namespace std;
 
 const size_t CachedBitWriter::MAX_CACHED_BYTES = 10;
 
-CachedBitWriter::CachedBitWriter(ostream& out) : output_(out), bucket_idx(0), bucket_bits_allocated(0) {
+CachedBitWriter::CachedBitWriter(ostream& out) : out_(out), bucket_idx(0), bucket_bits_allocated(0) {
   buffer.resize(MAX_CACHED_BYTES);
 }
 
@@ -33,7 +33,7 @@ void CachedBitWriter::Flush() {
   if (bucket_bits_allocated) {
     WriteNLastBits(0, 8 - bucket_bits_allocated);
   }
-  WritePrimitive<u_char>(output_, buffer.data(), bucket_idx);
+  WritePrimitive<u_char>(out_, buffer.data(), bucket_idx);
   bucket_idx = 0;
   bucket_bits_allocated = 0;
 }
