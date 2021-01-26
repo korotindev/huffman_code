@@ -8,19 +8,19 @@ using namespace std;
 using CodeInfo = HuffmanCode::CodeInfo;
 
 namespace {
-  void BuildCannonicalCodesLegths(vector<CodeInfo>& result, const HuffmanTree::Node::Ptr& root, uint code_length) {
+  void BuildCannonicalCodesLengths(vector<CodeInfo>& result, const HuffmanTree::Node::Ptr& root, uint code_length) {
     if (!root->left && !root->right) {
       result.push_back(CodeInfo{code_length, root->sym});
       return;
     }
-    BuildCannonicalCodesLegths(result, root->left, code_length + 1);
-    BuildCannonicalCodesLegths(result, root->right, code_length + 1);
+    BuildCannonicalCodesLengths(result, root->left, code_length + 1);
+    BuildCannonicalCodesLengths(result, root->right, code_length + 1);
   }
 }  // namespace
 
 HuffmanCode::HuffmanCode(const HuffmanTree& tree) {
   vector<CodeInfo> code_infos;
-  BuildCannonicalCodesLegths(code_infos, tree.GetRoot(), 0);
+  BuildCannonicalCodesLengths(code_infos, tree.GetRoot(), 0);
   BuildSymbolInfos(move(code_infos));
 }
 
