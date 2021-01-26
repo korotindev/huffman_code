@@ -2,6 +2,8 @@
 #include <iostream>
 #include <string>
 
+#include "huffman_code.h"
+
 using namespace std;
 
 namespace {
@@ -26,7 +28,7 @@ int main(int argc, char** argv) {
   }
 
   string input_filename = argv[1];
-  ifstream input(input_filename);
+  ifstream input(input_filename, ios::binary);
   if (!input.is_open()) {
     cout << "No such file: " + input_filename + "\n";
     return 1;
@@ -38,6 +40,8 @@ int main(int argc, char** argv) {
     cout << "No such file: " + output_filename + "\n";
     return 1;
   }
+
+  auto code = HuffmanCode::DeserializeFrom(input);
 
   return 0;
 }

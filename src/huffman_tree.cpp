@@ -35,9 +35,7 @@ HuffmanTree::HuffmanTree(const HuffmanTree::CharStat& stat) {
   root_ = move(pq.front());
 }
 
-const HuffmanTree::Node::Ptr& HuffmanTree::GetRoot() const {
-  return root_;
-}
+const HuffmanTree::Node::Ptr& HuffmanTree::GetRoot() const { return root_; }
 
 HuffmanTree BuildHuffmanTreeFrom(istream& input) {
   HuffmanTree::CharStat stat;
