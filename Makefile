@@ -9,7 +9,7 @@ all: build build/encode build/decode
 build:
 	mkdir -p build
 
-build/%.o: src/%.cpp
+build/%.o: src/%.cpp 
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 
 build/encode: build/encode.o $(SDK_OBJECTS)

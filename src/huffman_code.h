@@ -7,7 +7,8 @@ class HuffmanCode {
     uint code;
     uint length;
   };
-  HuffmanCode(const HuffmanTree& tree);
+
+  explicit HuffmanCode(const HuffmanTree& tree);
   const SymbolInfo& GetSymbolCompressionInfo(char sym) const;
   void SerializeTo(std::ostream& out) const;
 

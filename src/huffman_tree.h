@@ -16,7 +16,7 @@ class HuffmanTree {
   };
   using CharStat = std::unordered_map<char, unsigned long long>;
 
-  HuffmanTree(const CharStat& stat);
+  explicit HuffmanTree(const CharStat& stat);
   const Node::Ptr& GetRoot() const;
 
  private:
