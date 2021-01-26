@@ -1,12 +1,20 @@
 #pragma once
+
 #include <iostream>
+#include <vector>
 
 class BitStream {
   std::ostream& output_;
+  std::vector<u_char> buffer;
+  size_t bucket_idx;
+  u_char bucket_bits_allocated;
 
  public:
+  static const size_t MAX_CACHED_BYTES;
+
   explicit BitStream(std::ostream& out);
-  void write_n_last_bits(uint packed_bits, uint length);
-  bool can_write_n_bits(uint length) const;
+  void WriteNLastBits(uint code, uint n);
+  bool CanWriteBits(uint length) const;
   void flush();
+  size_t BufferedBytesCount() const;
 };

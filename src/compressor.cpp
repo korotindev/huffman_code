@@ -13,10 +13,10 @@ void Compressor::Encode(istream& input, ostream& output) const {
   BitStream bit_stream(output);
   while (input.get(c)) {
     const auto& symbol_info = huffman_code_.GetSymbolCompressionInfo(c);
-    if (!bit_stream.can_write_n_bits(symbol_info.length)) {
+    if (!bit_stream.CanWriteBits(symbol_info.length)) {
       bit_stream.flush();
     }
-    bit_stream.write_n_last_bits(symbol_info.code, symbol_info.length);
+    bit_stream.WriteNLastBits(symbol_info.code, symbol_info.length);
   }
   bit_stream.flush();
 }
