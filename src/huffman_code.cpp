@@ -15,6 +15,30 @@ namespace {
     BuildCannonicalCodesLegths(result, root->left, code_length + 1);
     BuildCannonicalCodesLegths(result, root->right, code_length + 1);
   }
+
+  template <typename T>
+  void WritePrimitive(ostream& out, T t, size_t n = sizeof(T)) {
+    static_assert(is_integral<T>::value, "Integral required.");
+    out.write(reinterpret_cast<const char*>(&t), n);
+  }
+
+  template <typename T>
+  void WritePrimitive(ostream& out, const T* t, size_t n = sizeof(T)) {
+    static_assert(is_integral<T>::value, "Integral required.");
+    out.write(reinterpret_cast<const char*>(t), n);
+  }
+
+  template <typename T>
+  void ReadPrimitive(istream& in, T& t, size_t n = sizeof(T)) {
+    static_assert(is_integral<T>::value, "Integral required.");
+    in.read(reinterpret_cast<char*>(&t), n);
+  }
+
+  template <typename T>
+  void ReadPrimitive(istream& in, T* t, size_t n = sizeof(T)) {
+    static_assert(is_integral<T>::value, "Integral required.");
+    in.read(reinterpret_cast<char*>(t), n);
+  }
 }  // namespace
 
 HuffmanCode::HuffmanCode(const HuffmanTree& tree) {
@@ -42,32 +66,6 @@ void HuffmanCode::BuildSymbolInfos(vector<CodeInfo> code_infos) {
 }
 const HuffmanCode::SymbolInfo& HuffmanCode::GetSymbolCompressionInfo(char sym) const { return symbol_infos_.at(sym); }
 
-namespace {
-  template <typename T>
-  void WritePrimitive(ostream& out, T t, size_t n = sizeof(T)) {
-    static_assert(is_integral<T>::value, "Integral required.");
-    out.write(reinterpret_cast<const char*>(&t), n);
-  }
-
-  template <typename T>
-  void WritePrimitive(ostream& out, const T* t, size_t n = sizeof(T)) {
-    static_assert(is_integral<T>::value, "Integral required.");
-    out.write(reinterpret_cast<const char*>(t), n);
-  }
-
-  template <typename T>
-  void ReadPrimitive(istream& in, T& t, size_t n = sizeof(T)) {
-    static_assert(is_integral<T>::value, "Integral required.");
-    in.read(reinterpret_cast<char*>(&t), n);
-  }
-
-  template <typename T>
-  void ReadPrimitive(istream& in, T* t, size_t n = sizeof(T)) {
-    static_assert(is_integral<T>::value, "Integral required.");
-    in.read(reinterpret_cast<char*>(t), n);
-  }
-}  // namespace
-
 void HuffmanCode::SerializeTo(ostream& out) const {
   {
     string digest = "korotin.dev";
@@ -85,11 +83,9 @@ HuffmanCode HuffmanCode::DeserializeFrom(istream& in) {
   {
     size_t digest_size;
     ReadPrimitive(in, digest_size);
-    std::vector<char> file_digest(' ', digest_size);
-    ReadPrimitive(in, file_digest.data(), file_digest.size());
-    string digest = "korotin.dev";
-    string file_digest_str(file_digest.begin(), file_digest.end());
-    if (digest != file_digest_str) {
+    string file_digest(digest_size, ' ');
+    ReadPrimitive(in, &file_digest[0], file_digest.size());
+    if (file_digest != "korotin.dev") {
       throw runtime_error("Digest is missing!");
     }
   }
