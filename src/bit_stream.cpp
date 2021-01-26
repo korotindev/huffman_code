@@ -29,7 +29,7 @@ void BitStream::WriteNLastBits(uint code, uint n) {
 
 bool BitStream::CanWriteBits(uint length) const { return BufferedBytesCount() + length < MAX_CACHED_BYTES * 8; }
 
-void BitStream::flush() {
+void BitStream::Flush() {
   if (bucket_bits_allocated) {
     WriteNLastBits(0, 8 - bucket_bits_allocated);
   }

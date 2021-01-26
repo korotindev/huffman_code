@@ -15,6 +15,6 @@ class BitStream {
   explicit BitStream(std::ostream& out);
   void WriteNLastBits(uint code, uint n);
   bool CanWriteBits(uint length) const;
-  void flush();
+  void Flush();
   size_t BufferedBytesCount() const;
 };

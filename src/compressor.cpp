@@ -14,9 +14,9 @@ void Compressor::Encode(istream& input, ostream& output) const {
   while (input.get(c)) {
     const auto& symbol_info = huffman_code_.GetSymbolCompressionInfo(c);
     if (!bit_stream.CanWriteBits(symbol_info.length)) {
-      bit_stream.flush();
+      bit_stream.Flush();
     }
     bit_stream.WriteNLastBits(symbol_info.code, symbol_info.length);
   }
-  bit_stream.flush();
+  bit_stream.Flush();
 }
