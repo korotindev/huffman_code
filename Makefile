@@ -18,6 +18,9 @@ build/encode: build/encode.o $(SDK_OBJECTS)
 build/decode: build/decode.o $(SDK_OBJECTS)
 	$(CXX) $(CXXFLAGS) -o $@ $^
 
+build/test: build/test.o $(SDK_OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $@ $^
+
 .PHONY: clean
 clean:
 	rm -rf build/*
@@ -25,3 +28,7 @@ clean:
 .PHONY: format
 format:
 	clang-format --sort-includes -i src/*
+
+.PHONY: test
+test: build/test
+	build/test
