@@ -35,3 +35,5 @@ void CachedBitReader::CacheNextChunk() {
   ReadPrimitive(in_, buffer.data(), MAX_CACHED_BYTES);
   buckets_cached = in_.gcount();
 }
+
+const std::vector<u_char>& CachedBitReader::GetBuffer() const { return buffer; }

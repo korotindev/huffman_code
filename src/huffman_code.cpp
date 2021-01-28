@@ -33,8 +33,11 @@ void HuffmanCode::BuildSymbolInfos(vector<CodeInfo> code_infos) {
   for (size_t i = 0; i < code_infos.size(); i++) {
     current_length = code_infos[i].length;
 
-    symbol_infos_[code_infos[i].sym] = SymbolInfo{current_code, current_length};
-    inverted_symbol_infos_[current_code] = code_infos[i].sym;
+    {
+      SymbolInfo symbol_info{current_code, current_length};
+      symbol_infos_[code_infos[i].sym] = symbol_info;
+      inverted_symbol_infos_[symbol_info] = code_infos[i].sym;
+    }
 
     if (i + 1 < code_infos.size()) {
       next_length = current_length;
@@ -46,8 +49,8 @@ void HuffmanCode::BuildSymbolInfos(vector<CodeInfo> code_infos) {
 }
 const HuffmanCode::SymbolInfo& HuffmanCode::GetSymbolCompressionInfo(char sym) const { return symbol_infos_.at(sym); }
 
-const char* HuffmanCode::FindSymbolByCode(uint code) const {
-  auto it = inverted_symbol_infos_.find(code);
+const char* HuffmanCode::FindSymbolByCode(SymbolInfo info) const {
+  auto it = inverted_symbol_infos_.find(info);
   if (it == inverted_symbol_infos_.end()) {
     return nullptr;
   }
@@ -91,4 +94,16 @@ HuffmanCode HuffmanCode::DeserializeFrom(istream& in) {
   HuffmanCode code;
   code.BuildSymbolInfos(move(code_infos));
   return code;
+}
+
+const hash<uint> HuffmanCode::SymbolInfoHasher::hasher = hash<uint>();
+
+bool HuffmanCode::SymbolInfo::operator==(const SymbolInfo& info) const {
+  return code == info.code && length == info.length;
+}
+
+size_t HuffmanCode::SymbolInfoHasher::operator()(SymbolInfo info) const {
+  size_t seed = hasher(info.code);
+  size_t value = hasher(info.length);
+  return value + 0x9e3779b9 + (seed << 6) + (seed >> 2);
 }

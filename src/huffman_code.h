@@ -8,6 +8,7 @@ class HuffmanCode {
   struct SymbolInfo {
     uint code;
     uint length;
+    bool operator==(const SymbolInfo& other) const;
   };
 
   struct CodeInfo {
@@ -17,7 +18,7 @@ class HuffmanCode {
 
   explicit HuffmanCode(const HuffmanTree& tree);
   const SymbolInfo& GetSymbolCompressionInfo(char sym) const;
-  const char* FindSymbolByCode(uint code) const;
+  const char* FindSymbolByCode(SymbolInfo info) const;
   void SerializeTo(std::ostream& out) const;
   static HuffmanCode DeserializeFrom(std::istream& in);
 
@@ -25,6 +26,11 @@ class HuffmanCode {
   HuffmanCode() = default;
   void BuildSymbolInfos(std::vector<CodeInfo> info);
 
+  struct SymbolInfoHasher {
+    const static std::hash<uint> hasher;
+    size_t operator()(SymbolInfo info) const;
+  };
+
   std::unordered_map<char, SymbolInfo> symbol_infos_;
-  std::unordered_map<uint, char> inverted_symbol_infos_;
+  std::unordered_map<SymbolInfo, char, SymbolInfoHasher> inverted_symbol_infos_;
 };

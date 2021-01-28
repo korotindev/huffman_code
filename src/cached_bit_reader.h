@@ -16,4 +16,5 @@ class CachedBitReader {
   bool HasBits() const;
   bool ReadBit();
   void CacheNextChunk();
+  const std::vector<u_char>& GetBuffer() const;
 };

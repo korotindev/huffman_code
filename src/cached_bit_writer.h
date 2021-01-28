@@ -17,4 +17,5 @@ class CachedBitWriter {
   bool CanWriteBits(uint length) const;
   void Flush();
   size_t BufferedBytesCount() const;
+  const std::vector<u_char>& GetBuffer() const;
 };

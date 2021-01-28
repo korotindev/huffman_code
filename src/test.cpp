@@ -1,8 +1,8 @@
 #include <iostream>
 #include <sstream>
-#include <cassert>
 
 #include "compressor.h"
+#include "utils.h"
 
 using namespace std;
 
@@ -20,19 +20,24 @@ void test(string str) {
     compressor.Encode(in, binary);
   }
 
+  in.clear();
+  in.seekg(0);
+  binary.clear();
+  binary.seekg(0);
   ostringstream out;
   {
     auto code = HuffmanCode::DeserializeFrom(binary);
     Compressor compressor(code);
-    compressor.Decode(in, out);
+    compressor.Decode(binary, out);
   }
 
-  assert(in.str() == out.str());
+  if (in.str() != out.str()) {
+    cout << "Test failed\n"
+         << "Expected: " << in.str() << "\nResult: " << out.str() << "\n\n";
+  }
 }
 
 int main() {
-  test("L");
   test("Lorem");
-  test("Lorem impsum");
   return 0;
 }

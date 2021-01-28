@@ -39,3 +39,5 @@ void CachedBitWriter::Flush() {
 }
 
 size_t CachedBitWriter::BufferedBytesCount() const { return bucket_idx + (bucket_bits_allocated != 0); }
+
+const std::vector<u_char>& CachedBitWriter::GetBuffer() const { return buffer; }

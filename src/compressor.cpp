@@ -1,7 +1,10 @@
 #include "compressor.h"
 
-#include "cached_bit_writer.h"
+#include <algorithm>
+#include <bitset>
+
 #include "cached_bit_reader.h"
+#include "cached_bit_writer.h"
 
 using namespace std;
 
@@ -11,11 +14,11 @@ void Compressor::Encode(istream& in, ostream& out) const {
   CachedBitWriter bit_writer(out);
   char c;
   while (in.get(c)) {
-    const auto& symbol_info = huffman_code_.GetSymbolCompressionInfo(c);
-    if (!bit_writer.CanWriteBits(symbol_info.length)) {
+    const auto& info = huffman_code_.GetSymbolCompressionInfo(c);
+    if (!bit_writer.CanWriteBits(info.length)) {
       bit_writer.Flush();
     }
-    bit_writer.WriteNLastBits(symbol_info.code, symbol_info.length);
+    bit_writer.WriteNLastBits(info.code, info.length);
   }
   bit_writer.Flush();
 }
@@ -23,14 +26,20 @@ void Compressor::Encode(istream& in, ostream& out) const {
 void Compressor::Decode(istream& in, ostream& out) const {
   CachedBitReader bit_reader(in);
   uint code = 0;
+  uint length = 0;
+  bit_reader.CacheNextChunk();
+
   while (bit_reader.HasBits()) {
-    code |= bit_reader.ReadBit();
-    auto sym_ptr = huffman_code_.FindSymbolByCode(code);
+    code |= (bit_reader.ReadBit() << length);
+    length++;
+    auto sym_ptr = huffman_code_.FindSymbolByCode(HuffmanCode::SymbolInfo{code, length});
+
     if (sym_ptr) {
       out << *sym_ptr;
+      code = 0;
+      length = 0;
     } else {
       code = code << 1;
     }
-
   }
 }
