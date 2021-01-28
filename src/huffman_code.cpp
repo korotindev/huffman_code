@@ -1,6 +1,7 @@
 #include "huffman_code.h"
 
 #include <algorithm>
+#include <bitset>
 
 #include "utils.h"
 
@@ -39,10 +40,10 @@ void HuffmanCode::BuildSymbolInfos(vector<CodeInfo> code_infos) {
       inverted_symbol_infos_[symbol_info] = code_infos[i].sym;
     }
 
-    if (i + 1 < code_infos.size()) {
-      next_length = current_length;
-    } else {
+    if (i < code_infos.size()) {
       next_length = code_infos[i + 1].length;
+    } else {
+      next_length = current_length;
     }
     current_code = (current_code + 1) << (next_length - current_length);
   }
