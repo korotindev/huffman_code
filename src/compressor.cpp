@@ -47,13 +47,10 @@ void Compressor::Decode(istream& in, ostream& out) const {
     code |= bit_reader.ReadBit();
     length++;
     auto sym_ptr = huffman_code_.FindSymbolByCode(HuffmanCode::SymbolInfo{code, length});
-
     if (sym_ptr) {
       out << *sym_ptr;
       code = 0;
       length = 0;
-    } else {
-      code = code << 1;
     }
   }
 }

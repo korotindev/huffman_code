@@ -7,6 +7,7 @@
 using namespace std;
 
 void test(string str) {
+  cout << "Test \"" << str << "\": ";
   istringstream in(str);
   stringstream binary;
 
@@ -32,12 +33,18 @@ void test(string str) {
   }
 
   if (in.str() != out.str()) {
-    cout << "Test failed\n"
-         << "Expected: " << in.str() << "\nResult: " << out.str() << "\n\n";
+    cout << "FAILED\n"
+         << "Expected: " << in.str() << " (size: " << in.str().size() << ")\n"
+         << "Result: " << out.str() << " (size: " << out.str().size() << ")\n\n";
+  } else {
+    cout << "OK\n";
   }
 }
 
 int main() {
+  test("L");
   test("Lorem");
+  test("Lorem impsum");
+  test("Lorem impsum dolor sit amet");
   return 0;
 }
