@@ -40,7 +40,7 @@ void HuffmanCode::BuildSymbolInfos(vector<CodeInfo> code_infos) {
       inverted_symbol_infos_[symbol_info] = code_infos[i].sym;
     }
 
-    if (i < code_infos.size()) {
+    if (i + 1 < code_infos.size()) {
       next_length = code_infos[i + 1].length;
     } else {
       next_length = current_length;

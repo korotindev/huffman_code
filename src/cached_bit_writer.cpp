@@ -27,7 +27,9 @@ void CachedBitWriter::WriteNLastBits(uint code, uint n) {
   }
 }
 
-bool CachedBitWriter::CanWriteBits(uint length) const { return BufferedBytesCount() + length < MAX_CACHED_BYTES * 8; }
+bool CachedBitWriter::CanWriteBits(uint length) const {
+  return BufferedBytesCount() * 8 + length < MAX_CACHED_BYTES * 8;
+}
 
 void CachedBitWriter::Flush() {
   if (bucket_bits_allocated) {

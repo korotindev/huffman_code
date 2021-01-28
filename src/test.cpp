@@ -42,10 +42,10 @@ void test(string str) {
 }
 
 int main() {
+  test("Lorem impsum dolor sit amet");
   test("L");
   test("Lorem");
   test("Lorem impsum");
-  test("Lorem impsum dolor sit amet");
   test("Lorem ipsum dolor sit amet, consectetur adipiscing elit.");
   
   return 0;
