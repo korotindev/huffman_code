@@ -8,10 +8,10 @@
 
 using namespace std;
 
-
+namespace {
   uint ReverseNLastBits(uint code, uint n) {
     uint result = 0;
-    for(uint i = 0; i < n; i++) {
+    for (uint i = 0; i < n; i++) {
       result = result << 1;
       result |= (code & 1);
       code = code >> 1;
@@ -19,6 +19,7 @@ using namespace std;
     code = code << n;
     return result | code;
   }
+}  // namespace
 
 Compressor::Compressor(const HuffmanCode& huffman_code) : huffman_code_(huffman_code) {}
 
@@ -27,9 +28,6 @@ void Compressor::Encode(istream& in, ostream& out) const {
   char c;
   while (in.get(c)) {
     const auto& info = huffman_code_.GetSymbolCompressionInfo(c);
-    if (!bit_writer.CanWriteBits(info.length)) {
-      bit_writer.Flush();
-    }
     uint reversed_code = ReverseNLastBits(info.code, info.length);
     bit_writer.WriteNLastBits(reversed_code, info.length);
   }

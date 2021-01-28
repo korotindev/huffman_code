@@ -19,7 +19,10 @@ void CachedBitWriter::WriteNLastBits(uint code, uint n) {
     if (bits_collected <= n) {
       n -= bits_collected;
       bucket_bits_allocated = 0;
-      bucket_idx++;
+      if (++bucket_idx == MAX_CACHED_BYTES) {
+        // Problem here, sometimes it fucks up
+        FlushBuffer();
+      }
     } else {
       bucket_bits_allocated += n;
       n = 0;
@@ -31,13 +34,17 @@ bool CachedBitWriter::CanWriteBits(uint length) const {
   return BufferedBytesCount() * 8 + length < MAX_CACHED_BYTES * 8;
 }
 
+void CachedBitWriter::FlushBuffer() {
+  WritePrimitive<u_char>(out_, buffer.data(), bucket_idx);
+  bucket_idx = 0;
+  bucket_bits_allocated = 0;
+}
+
 void CachedBitWriter::Flush() {
   if (bucket_bits_allocated) {
     WriteNLastBits(0, 8 - bucket_bits_allocated);
   }
-  WritePrimitive<u_char>(out_, buffer.data(), bucket_idx);
-  bucket_idx = 0;
-  bucket_bits_allocated = 0;
+  FlushBuffer();
 }
 
 size_t CachedBitWriter::BufferedBytesCount() const { return bucket_idx + (bucket_bits_allocated != 0); }
