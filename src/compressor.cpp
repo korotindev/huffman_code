@@ -28,7 +28,6 @@ void Compressor::Encode(istream& in, ostream& out) const {
   char c;
   while (in.get(c)) {
     const auto& compression_info = huffman_code_.GetSymbolCompressionInfo(c);
-    // FIXME get this info directly from compression_info
     uint reversed_code = ReverseNLastBits(compression_info.code, compression_info.length);
     bit_writer.WriteNLastBits(reversed_code, compression_info.length);
   }
