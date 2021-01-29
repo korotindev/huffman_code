@@ -5,6 +5,11 @@
 #include <unordered_map>
 #include <vector>
 
+class EmptyStatError : public std::runtime_error {
+ public:
+  using std::runtime_error::runtime_error;
+};
+
 class HuffmanTree {
  public:
   struct Node {

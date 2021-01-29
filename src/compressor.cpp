@@ -27,9 +27,10 @@ void Compressor::Encode(istream& in, ostream& out) const {
   CachedBitWriter bit_writer(out);
   char c;
   while (in.get(c)) {
-    const auto& info = huffman_code_.GetSymbolCompressionInfo(c);
-    uint reversed_code = ReverseNLastBits(info.code, info.length);
-    bit_writer.WriteNLastBits(reversed_code, info.length);
+    const auto& compression_info = huffman_code_.GetSymbolCompressionInfo(c);
+    // FIXME get this info directly from compression_info
+    uint reversed_code = ReverseNLastBits(compression_info.code, compression_info.length);
+    bit_writer.WriteNLastBits(reversed_code, compression_info.length);
   }
   bit_writer.Flush();
 }
@@ -37,7 +38,7 @@ void Compressor::Encode(istream& in, ostream& out) const {
 void Compressor::Decode(istream& in, ostream& out) const {
   CachedBitReader bit_reader(in);
   uint code = 0;
-  uint length = 0;
+  uint code_length = 0;
   unsigned long long symbols_readed = 0;
   unsigned long long symbols_needed = huffman_code_.GetSymbolsCount();
   bit_reader.CacheNextChunk();
@@ -45,12 +46,12 @@ void Compressor::Decode(istream& in, ostream& out) const {
   while (symbols_readed < symbols_needed && bit_reader.HasBits()) {
     code = code << 1;
     code |= bit_reader.ReadBit();
-    length++;
-    auto sym_ptr = huffman_code_.FindSymbolByCode(HuffmanCode::SymbolInfo{code, length});
+    code_length++;
+    auto sym_ptr = huffman_code_.FindSymbolByCode(HuffmanCode::SymbolInfo{code, code_length});
     if (sym_ptr) {
       out << *sym_ptr;
       code = 0;
-      length = 0;
+      code_length = 0;
       symbols_readed++;
     }
   }

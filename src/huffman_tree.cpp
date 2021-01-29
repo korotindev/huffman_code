@@ -5,6 +5,10 @@
 using namespace std;
 
 HuffmanTree::HuffmanTree(const HuffmanTree::CharStat& stat) {
+  if (stat.empty()) {
+    throw EmptyStatError("characters not found");
+  }
+
   vector<Node::Ptr> pq;
 
   for (auto it : stat) {
