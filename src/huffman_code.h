@@ -20,6 +20,7 @@ class HuffmanCode {
   const SymbolInfo& GetSymbolCompressionInfo(char sym) const;
   const char* FindSymbolByCode(SymbolInfo info) const;
   void SerializeTo(std::ostream& out) const;
+  unsigned long long GetSymbolsCount() const;
   static HuffmanCode DeserializeFrom(std::istream& in);
 
  private:
@@ -33,4 +34,5 @@ class HuffmanCode {
 
   std::unordered_map<char, SymbolInfo> symbol_infos_;
   std::unordered_map<SymbolInfo, char, SymbolInfoHasher> inverted_symbol_infos_;
+  unsigned long long symbols_count_;
 };

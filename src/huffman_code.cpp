@@ -20,6 +20,7 @@ namespace {
 }  // namespace
 
 HuffmanCode::HuffmanCode(const HuffmanTree& tree) {
+  symbols_count_ = tree.GetRoot()->count;
   vector<CodeInfo> code_infos;
   BuildCannonicalCodesLengths(code_infos, tree.GetRoot(), 0);
   BuildSymbolInfos(move(code_infos));
@@ -58,12 +59,13 @@ const char* HuffmanCode::FindSymbolByCode(SymbolInfo info) const {
   return &it->second;
 }
 
+unsigned long long HuffmanCode::GetSymbolsCount() const { return symbols_count_; }
+
 void HuffmanCode::SerializeTo(ostream& out) const {
-  {
-    string digest = "korotin.dev";
-    WritePrimitive(out, digest.size());
-    WritePrimitive(out, digest.c_str(), digest.size());
-  }
+  string digest = "korotin.dev";
+  WritePrimitive(out, digest.size());
+  WritePrimitive(out, digest.c_str(), digest.size());
+  WritePrimitive(out, symbols_count_);
   WritePrimitive(out, symbol_infos_.size());
   for (const auto& info_pair : symbol_infos_) {
     WritePrimitive(out, info_pair.first);
@@ -72,19 +74,21 @@ void HuffmanCode::SerializeTo(ostream& out) const {
 }
 
 HuffmanCode HuffmanCode::DeserializeFrom(istream& in) {
-  {
-    size_t digest_size;
-    ReadPrimitive(in, digest_size);
-    string file_digest(digest_size, ' ');
-    ReadPrimitive(in, &file_digest[0], file_digest.size());
-    if (file_digest != "korotin.dev") {
-      throw runtime_error("Digest is missing!");
-    }
+  HuffmanCode code;
+
+  size_t digest_size;
+  ReadPrimitive(in, digest_size);
+  string file_digest(digest_size, ' ');
+  ReadPrimitive(in, &file_digest[0], file_digest.size());
+  if (file_digest != "korotin.dev") {
+    throw runtime_error("Digest is missing!");
   }
 
+  ReadPrimitive(in, code.symbols_count_);
+
+  std::vector<CodeInfo> code_infos;
   size_t table_size;
   ReadPrimitive(in, table_size);
-  std::vector<CodeInfo> code_infos;
   for (size_t i = 0; i < table_size; i++) {
     CodeInfo info;
     ReadPrimitive(in, info.sym);
@@ -92,7 +96,6 @@ HuffmanCode HuffmanCode::DeserializeFrom(istream& in) {
     code_infos.push_back(info);
   }
 
-  HuffmanCode code;
   code.BuildSymbolInfos(move(code_infos));
   return code;
 }
