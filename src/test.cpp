@@ -1,3 +1,5 @@
+#include <algorithm>
+#include <chrono>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
@@ -8,7 +10,7 @@
 using namespace std;
 
 namespace {
-  void test(size_t id, string str) {
+  void test(size_t id, const string& str) {
     cout << "Test " << id << ": ";
     istringstream in(str);
     stringstream binary;
@@ -43,7 +45,7 @@ namespace {
     }
   }
 
-  void test_assert(size_t id, string str) {
+  void test_assert(size_t id, const string& str) {
     try {
       test(id, str);
     } catch (exception& ex) {
@@ -57,6 +59,44 @@ namespace {
       return;
     }
     cout << "FAILED. std::exception expected\n";
+  }
+
+  std::string random_string(size_t length) {
+    auto randchar = []() -> char {
+      const char charset[] =
+          "0123456789"
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+          "abcdefghijklmnopqrstuvwxyz";
+      const size_t max_index = (sizeof(charset) - 1);
+      return charset[rand() % max_index];
+    };
+    std::string str(length, 0);
+    std::generate_n(str.begin(), length, randchar);
+    return str;
+  }
+
+  void test_big_strings(size_t first_test_id) {
+    using namespace std::chrono;
+
+    cout << "Performance runs: \n";
+
+    constexpr ulong string_size = 10000000;
+     vector<string> test_strs{
+        random_string(string_size),
+        random_string(2 * string_size),
+        random_string(10 * string_size),
+    };
+
+    cout << "tests generated\n";
+
+    for (const auto& str : test_strs) {
+      auto start = high_resolution_clock::now();
+      test(first_test_id++, str);
+      auto stop = high_resolution_clock::now();
+      duration<float> duration = stop - start;
+      cout << "(size:" << str.size() / (1024.0 * 1024.0) << "mb)";
+      cout << "(test_time: " << duration.count() << "s)\n";
+    }
   }
 }  // namespace
 
@@ -78,6 +118,7 @@ int main() {
   }
 
   test_assert(tests.size(), "");
+  test_big_strings(tests.size() + 1);
 
   return 0;
 }
