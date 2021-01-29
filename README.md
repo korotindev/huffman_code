@@ -7,7 +7,7 @@ vscode ➜ / $ make
 vscode ➜ / $ make test
 ```
 
-Or you can use [Remote-Containers](vscode:extension/ms-vscode-remote.remote-containers) extension in VSCode (see `.devcontainer` folder)
+Or you can use [Remote-Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers ) extension in VSCode (see `.devcontainer` folder)
 
 `make` will produce 3 files: 
 - `build/encode` see help (just run it)
