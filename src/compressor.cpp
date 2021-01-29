@@ -38,9 +38,11 @@ void Compressor::Decode(istream& in, ostream& out) const {
   CachedBitReader bit_reader(in);
   uint code = 0;
   uint length = 0;
+  unsigned long long symbols_readed = 0;
+  unsigned long long symbols_needed = huffman_code_.GetSymbolsCount();
   bit_reader.CacheNextChunk();
 
-  while (bit_reader.HasBits()) {
+  while (symbols_readed < symbols_needed && bit_reader.HasBits()) {
     code = code << 1;
     code |= bit_reader.ReadBit();
     length++;
@@ -49,6 +51,7 @@ void Compressor::Decode(istream& in, ostream& out) const {
       out << *sym_ptr;
       code = 0;
       length = 0;
+      symbols_readed++;
     }
   }
 }
