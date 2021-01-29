@@ -16,7 +16,6 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "envFile": "${workspaceFolder}/debug.env",
             "console": "externalTerminal",
             "MIMode": "gdb",
             "setupCommands": [
@@ -39,7 +38,6 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "envFile": "${workspaceFolder}/debug.env",
             "console": "externalTerminal",
             "MIMode": "gdb",
             "setupCommands": [
@@ -59,7 +57,6 @@
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}",
             "environment": [],
-            "envFile": "${workspaceFolder}/debug.env",
             "console": "externalTerminal",
             "MIMode": "gdb",
             "setupCommands": [

@@ -30,5 +30,8 @@ format:
 	clang-format --sort-includes -i src/*
 
 .PHONY: test
+test: export LSAN_OPTIONS=max_leaks=1:verbosity=1:log_threads=1
+test: export ASAN_OPTIONS=debug=1:detect_leaks=1:abort_on_error=1:halt_on_error=1:verbosity=1:color=always
+test: export LD_LIBRARY_PATH=/lib/x86_64-linux-gnu/debug
 test: build/test
 	build/test
