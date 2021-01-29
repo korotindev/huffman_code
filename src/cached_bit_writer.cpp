@@ -36,6 +36,7 @@ bool CachedBitWriter::CanWriteBits(uint length) const {
 
 void CachedBitWriter::FlushBuffer() {
   WritePrimitive<u_char>(out_, buffer.data(), bucket_idx);
+  buffer.assign(MAX_CACHED_BYTES, 0);
   bucket_idx = 0;
   bucket_bits_allocated = 0;
 }
