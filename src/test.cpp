@@ -81,7 +81,7 @@ namespace {
     cout << "Performance runs: \n";
 
     constexpr ulong string_size = 10000000;
-     vector<string> test_strs{
+    vector<string> test_strs{
         random_string(string_size),
         random_string(2 * string_size),
         random_string(10 * string_size),

@@ -10,6 +10,7 @@ class CachedBitWriter {
   u_char bucket_bits_allocated;
 
   void FlushBuffer();
+
  public:
   static const size_t MAX_CACHED_BYTES;
 
