@@ -11,6 +11,9 @@ using CodeInfo = HuffmanCode::CodeInfo;
 namespace {
   void BuildCannonicalCodesLengths(vector<CodeInfo>& result, const HuffmanTree::Node::Ptr& root, uint code_length) {
     if (!root->left && !root->right) {
+      if (code_length == 0) {
+        code_length = 1;
+      }
       result.push_back(CodeInfo{code_length, root->sym});
       return;
     }
